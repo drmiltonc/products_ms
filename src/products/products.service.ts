@@ -12,8 +12,23 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
     this.$connect();
     this.logger.log('Database connected');
   }
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+
+  async create(createProductDto: CreateProductDto) {
+    try {
+      try {
+        const product = await this.product.create({
+          data: createProductDto,
+        });
+        this.logger.log(`Product created: ${product.id}`);
+        return product;
+      } catch (error) {
+        this.logger.error(`Error creating product: ${error}`);
+        throw error;
+      }
+    } finally {
+      this.$disconnect();
+      this.logger.log('Database disconnected');
+    }
   }
 
   findAll() {

@@ -24,5 +24,5 @@ model Product{
   createdAt DateTime @default(now())
 
   // Define el campo fecha de actualización
-  updateAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
 }
