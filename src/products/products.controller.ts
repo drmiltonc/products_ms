@@ -1,5 +1,5 @@
 // Importa los decoradores de NestJS para definir las rutas y los métodos HTTP
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 
 // Importa el servicio de productos
 import { ProductsService } from './products.service';
@@ -7,6 +7,7 @@ import { ProductsService } from './products.service';
 // Importa los DTO para validar y transformar los datos de entrada y salida
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { PaginationDto } from 'src/common/dto';
 
 
 // Define el controlador para la entidad Product
@@ -23,8 +24,9 @@ export class ProductsController {
 
   // Obtiene todos los productos
   @Get()
-  findAll() {
-    return this.productsService.findAll();
+  findAll(@Query() paginationDto: PaginationDto) {
+    return this
+      .productsService.findAll(paginationDto);
   }
 
   // Obtiene un producto por su ID
