@@ -25,8 +25,7 @@ export class ProductsController {
   // Obtiene todos los productos
   @Get()
   findAll(@Query() paginationDto: PaginationDto) {
-    return this
-      .productsService.findAll(paginationDto);
+    return this.productsService.findAll(paginationDto);
   }
 
   // Obtiene un producto por su ID
