@@ -6,8 +6,7 @@ import { ProductsModule } from './products/products.module';
 
 // Módulo de productos
 @Module({
-  // Importa el módulo de productos
-  imports: [ProductsModule],
+  imports: [ProductsModule], // Importa el módulo de productos
 })
 
 // Clase del módulo principal

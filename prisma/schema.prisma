@@ -20,9 +20,15 @@ model Product{
   // Define el campo precio
   price Float
 
+  // Define el campo disponible
+  available Boolean @default(true)
+
   // Define el campo fecha de creación
   createdAt DateTime @default(now())
 
   // Define el campo fecha de actualización
   updatedAt DateTime @updatedAt
+
+  //Crea el índice para el campo available
+  @@index([available])
 }
