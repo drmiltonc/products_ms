@@ -1,35 +1,28 @@
+// Importa las bibliotecas dotenv y joi
 import * as dotenv from 'dotenv';
 import * as joi from 'joi';
 
-// Load environment variables from .env file
+// Carga las variables de entorno desde el archivo .env
 dotenv.config();
 
-// Define environment variables schema  
+// Define el esquema de validación para las variables de entorno
 const envVarsSchema = joi.object({
     PORT: joi.number()
+        // Indica que el puerto es obligatorio
         .required(),
-    /* NODE_ENV: joi.string()
-        .valid('development', 'production')
+    
+    DATABASE_URL: joi.string()
+        // Indica que la URL de la base de datos es obligatoria
         .required(),
-    DB_HOST: joi.string()
-        .required(),
-    DB_PORT: joi.number()
-        .required(),
-    DB_NAME: joi.string()
-        .required(),
-    DB_USER: joi.string()
-        .required(),
-    DB_PASSWORD: joi.string()
-        .required(), */
 }).unknown(true);
 
-// Validate environment variables
+// Valida las variables de entorno utilizando el esquema definido
 const { error, value: envVars } = envVarsSchema.validate(process.env);
 
-// Throw an error if environment variables are not valid
+// Si hay algún error de validación, lanza una excepción
 if (error) {
     throw new Error(`Config validation error: ${error.message}`);
 }
 
-// Export environment variables
-export default envVars; 
+// Exporta las variables de entorno validadas
+export default envVars;

@@ -1,0 +1,28 @@
+// Define el generador del cliente
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Define la fuente de datos
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Define el modelo de Producto
+model Product{
+  // Define el campo id
+  id Int @id @default(autoincrement())
+
+  // Define el campo nombre
+  name String
+
+  // Define el campo precio
+  price Float
+
+  // Define el campo fecha de creación
+  createdAt DateTime @default(now())
+
+  // Define el campo fecha de actualización
+  updateAt DateTime @updatedAt
+}
