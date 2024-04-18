@@ -116,13 +116,15 @@ export class ProductsService extends PrismaClient implements OnModuleInit {
 
     try {
 
+      const {id: __, ...data} = updateProductDto;
+
       await this.findOne(id); // Buscar el producto en la base de datos
       this.logger.log(`Product found: ${id}`); // Registrar en el log que el producto fue encontrado
 
       // Actualizar el producto en la base de datos
       const product = await this.product.update({
         where: { id },
-        data: updateProductDto,
+        data: data,
       });
       this.logger.log(`Product updated: ${id}`); // Registrar en el log que el producto fue actualizado
 

@@ -1,41 +1,54 @@
-// Importa el módulo de fábrica de NestJS para crear la aplicación
+// NestFactory es una clase que proporciona métodos para crear instancias de aplicaciones NestJS.
 import { NestFactory } from '@nestjs/core';
 
-// Importa el módulo principal de la aplicación
+// AppModule es el módulo principal de la aplicación NestJS que contiene todos los demás módulos y controladores.
 import { AppModule } from './app.module';
 
-// Importa el pipe de validación de NestJS para validar las solicitudes entrantes
+// ValidationPipe es un pipe que valida las solicitudes entrantes según las reglas de validación definidas en los DTO.
 import { ValidationPipe, Logger } from '@nestjs/common';
 
-// Importa las variables de entorno
+// envVars es un objeto que contiene las variables de entorno de la aplicación.
 import envVars from './config/envs';
 
-// Función principal asíncrona para iniciar la aplicación
+//Importa las opciones de microservicio y el transporte de @nestjs/microservices
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+
+// async indica que la función es asíncrona y puede contener operaciones asíncronas.
 async function main() {
 
   // Crea una instancia del registrador de NestJS
+  // Logger es una clase que proporciona métodos para registrar mensajes en la consola.
   const logger = new Logger('Main');
 
-  // Crea una instancia de la aplicación NestJS
-  const app = await NestFactory.create(AppModule);
+  // createMicroservice() crea una instancia de una aplicación NestJS que utiliza un transporte de microservicio.
+  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
+    AppModule,
+    {
+      transport: Transport.TCP,
+      options: {
+        port: envVars.PORT
+      }
+    },
+  );
 
-  // Aplica el pipe de validación a todas las solicitudes entrantes
+  // useGlobalPipes() aplica un pipe a todas las solicitudes entrantes.
   app.useGlobalPipes(
     new ValidationPipe({
-      // Activa la lista blanca de propiedades permitidas
+      // whitelist: true activa la validación de la lista blanca, lo que significa que solo se permitirán las propiedades incluidas en la lista blanca.
       whitelist: true,
-      // Prohíbe las propiedades no incluidas en la lista blanca
+      // forbidNonWhitelisted: true prohíbe las propiedades que no están incluidas en la lista blanca.
       forbidNonWhitelisted: true,
     })
   );
 
-  // Inicia la aplicación en el puerto especificado en las variables de entorno
-  await app.listen(envVars.PORT);
+  // listen() inicia la aplicación en el puerto especificado.
+  await app.listen();
 
-  // Imprime el entorno actual
+  // log() registra un mensaje en la consola.
   logger.log(`Environment: ${envVars.PORT}`);
 
 }
 
-// Invoca la función principal para iniciar la aplicación
+// main() invoca la función principal para iniciar la aplicación.
 main();
+
