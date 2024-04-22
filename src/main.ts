@@ -19,14 +19,15 @@ async function main() {
   // Crea una instancia del registrador de NestJS
   // Logger es una clase que proporciona métodos para registrar mensajes en la consola.
   const logger = new Logger('Main');
+  console.log(envVars.NATS_SERVERS);
 
   // createMicroservice() crea una instancia de una aplicación NestJS que utiliza un transporte de microservicio.
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
     AppModule,
     {
-      transport: Transport.TCP,
+      transport: Transport.NATS,
       options: {
-        port: envVars.PORT
+        servers: envVars.NATS_SERVERS,
       }
     },
   );

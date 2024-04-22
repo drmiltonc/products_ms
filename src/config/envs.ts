@@ -10,14 +10,21 @@ const envVarsSchema = joi.object({
     PORT: joi.number()
         // Indica que el puerto es obligatorio
         .required(),
-    
+
     DATABASE_URL: joi.string()
         // Indica que la URL de la base de datos es obligatoria
+        .required(),
+
+    NATS_SERVERS: joi.array().items(joi.string())
+        // Indica que la URL de NATS es obligatoria
         .required(),
 }).unknown(true);
 
 // Valida las variables de entorno utilizando el esquema definido
-const { error, value: envVars } = envVarsSchema.validate(process.env);
+const { error, value: envVars } = envVarsSchema.validate({
+    ...process.env,
+    NATS_SERVERS: process.env.NATS_SERVERS?.split(',')
+});
 
 // Si hay algún error de validación, lanza una excepción
 if (error) {
